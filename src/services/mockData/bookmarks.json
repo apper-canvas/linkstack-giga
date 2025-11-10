@@ -1,0 +1,134 @@
+[
+  {
+    "Id": 1,
+    "url": "https://github.com/",
+    "title": "GitHub - Where the world builds software",
+    "description": "GitHub is where over 100 million developers shape the future of software, together.",
+    "favicon": "https://github.com/favicon.ico",
+    "folderId": 1,
+    "tags": ["development", "code", "git"],
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "Id": 2,
+    "url": "https://stackoverflow.com/",
+    "title": "Stack Overflow - Where Developers Learn, Share, & Build Careers",
+    "description": "Stack Overflow is the largest, most trusted online community for developers to learn.",
+    "favicon": "https://stackoverflow.com/favicon.ico",
+    "folderId": 1,
+    "tags": ["development", "help", "community"],
+    "createdAt": "2024-01-16T14:20:00Z",
+    "updatedAt": "2024-01-16T14:20:00Z"
+  },
+  {
+    "Id": 3,
+    "url": "https://react.dev/",
+    "title": "React - The library for web and native user interfaces",
+    "description": "React lets you build user interfaces out of individual pieces called components.",
+    "favicon": "https://react.dev/favicon.ico",
+    "folderId": 1,
+    "tags": ["react", "javascript", "frontend"],
+    "createdAt": "2024-01-17T09:15:00Z",
+    "updatedAt": "2024-01-17T09:15:00Z"
+  },
+  {
+    "Id": 4,
+    "url": "https://tailwindcss.com/",
+    "title": "Tailwind CSS - Rapidly build modern websites",
+    "description": "A utility-first CSS framework packed with classes to build any design, directly in your markup.",
+    "favicon": "https://tailwindcss.com/favicon.ico",
+    "folderId": 2,
+    "tags": ["css", "design", "utility"],
+    "createdAt": "2024-01-18T16:45:00Z",
+    "updatedAt": "2024-01-18T16:45:00Z"
+  },
+  {
+    "Id": 5,
+    "url": "https://dribbble.com/",
+    "title": "Dribbble - Discover the World's Top Designers & Creative Professionals",
+    "description": "Find Top Designers & Creative Professionals on Dribbble. We are where designers gain inspiration.",
+    "favicon": "https://dribbble.com/favicon.ico",
+    "folderId": 2,
+    "tags": ["design", "inspiration", "ui"],
+    "createdAt": "2024-01-19T11:30:00Z",
+    "updatedAt": "2024-01-19T11:30:00Z"
+  },
+  {
+    "Id": 6,
+    "url": "https://www.figma.com/",
+    "title": "Figma - The collaborative interface design tool",
+    "description": "Build better products as a team. Design, prototype, and gather feedback all in one place.",
+    "favicon": "https://www.figma.com/favicon.ico",
+    "folderId": 2,
+    "tags": ["design", "prototyping", "collaboration"],
+    "createdAt": "2024-01-20T08:00:00Z",
+    "updatedAt": "2024-01-20T08:00:00Z"
+  },
+  {
+    "Id": 7,
+    "url": "https://news.ycombinator.com/",
+    "title": "Hacker News",
+    "description": "Hacker News is a social news website focusing on computer science and entrepreneurship.",
+    "favicon": "https://news.ycombinator.com/favicon.ico",
+    "folderId": 3,
+    "tags": ["news", "tech", "startup"],
+    "createdAt": "2024-01-21T13:45:00Z",
+    "updatedAt": "2024-01-21T13:45:00Z"
+  },
+  {
+    "Id": 8,
+    "url": "https://techcrunch.com/",
+    "title": "TechCrunch - Startup and Technology News",
+    "description": "Reporting on the business of technology, startups, venture capital funding.",
+    "favicon": "https://techcrunch.com/favicon.ico",
+    "folderId": 3,
+    "tags": ["news", "startup", "venture"],
+    "createdAt": "2024-01-22T10:20:00Z",
+    "updatedAt": "2024-01-22T10:20:00Z"
+  },
+  {
+    "Id": 9,
+    "url": "https://www.producthunt.com/",
+    "title": "Product Hunt - The best new products in tech",
+    "description": "Product Hunt surfaces the best new products, every day. It's a place for product-loving enthusiasts.",
+    "favicon": "https://www.producthunt.com/favicon.ico",
+    "folderId": 3,
+    "tags": ["products", "launch", "discovery"],
+    "createdAt": "2024-01-23T15:10:00Z",
+    "updatedAt": "2024-01-23T15:10:00Z"
+  },
+  {
+    "Id": 10,
+    "url": "https://medium.com/",
+    "title": "Medium - Where good ideas find you",
+    "description": "Medium is an open platform where readers find dynamic thinking, and where expert voices can share their writing.",
+    "favicon": "https://medium.com/favicon.ico",
+    "folderId": 4,
+    "tags": ["reading", "writing", "blog"],
+    "createdAt": "2024-01-24T12:30:00Z",
+    "updatedAt": "2024-01-24T12:30:00Z"
+  },
+  {
+    "Id": 11,
+    "url": "https://dev.to/",
+    "title": "DEV Community - A constructive and inclusive social network for software developers",
+    "description": "Where programmers share ideas and help each other grow.",
+    "favicon": "https://dev.to/favicon.ico",
+    "folderId": 4,
+    "tags": ["development", "community", "learning"],
+    "createdAt": "2024-01-25T09:45:00Z",
+    "updatedAt": "2024-01-25T09:45:00Z"
+  },
+  {
+    "Id": 12,
+    "url": "https://css-tricks.com/",
+    "title": "CSS-Tricks - Tips, Tricks, and Techniques on using Cascading Style Sheets",
+    "description": "Daily articles about CSS, HTML, JavaScript, and all things related to web design and development.",
+    "favicon": "https://css-tricks.com/favicon.ico",
+    "folderId": 4,
+    "tags": ["css", "tutorials", "webdev"],
+    "createdAt": "2024-01-26T14:15:00Z",
+    "updatedAt": "2024-01-26T14:15:00Z"
+  }
+]
