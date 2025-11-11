@@ -113,6 +113,36 @@ const AllBookmarks = () => {
 
   const handleTagClick = (tag) => {
     navigate(`/tags?search=${encodeURIComponent(tag)}`);
+};
+
+  const handleToggleFavorite = async (bookmarkId) => {
+    try {
+      // Optimistic update
+      setBookmarks(prev => prev.map(bookmark => 
+        bookmark.Id === bookmarkId 
+          ? { ...bookmark, isFavorite: !bookmark.isFavorite }
+          : bookmark
+      ));
+
+      const result = await bookmarkService.toggleFavorite(bookmarkId);
+      
+      if (!result) {
+        // Rollback on failure
+        setBookmarks(prev => prev.map(bookmark => 
+          bookmark.Id === bookmarkId 
+            ? { ...bookmark, isFavorite: !bookmark.isFavorite }
+            : bookmark
+        ));
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      // Rollback on failure
+      setBookmarks(prev => prev.map(bookmark => 
+        bookmark.Id === bookmarkId 
+          ? { ...bookmark, isFavorite: !bookmark.isFavorite }
+          : bookmark
+      ));
+    }
   };
 
   const handleAddClick = () => {
@@ -215,10 +245,11 @@ const AllBookmarks = () => {
               </div>
               
               <BookmarkGrid
-                bookmarks={filteredBookmarks}
+bookmarks={filteredBookmarks}
                 onEdit={handleEditBookmark}
                 onDelete={handleDeleteBookmark}
                 onTagClick={handleTagClick}
+                onToggleFavorite={handleToggleFavorite}
               />
             </motion.div>
           )}

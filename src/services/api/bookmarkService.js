@@ -15,7 +15,8 @@ export const bookmarkService = {
           {"field": {"Name": "title_c"}},
           {"field": {"Name": "description_c"}},
           {"field": {"Name": "url_c"}},
-          {"field": {"Name": "favicon_c"}},
+{"field": {"Name": "favicon_c"}},
+          {"field": {"Name": "is_favorite_c"}},
           {"field": {"Name": "folder_id_c"}},
           {"field": {"Name": "tags_c"}},
           {"field": {"Name": "CreatedOn"}},
@@ -37,10 +38,11 @@ export const bookmarkService = {
         description: bookmark.description_c || '',
         url: bookmark.url_c || '',
         favicon: bookmark.favicon_c || '',
-        folderId: bookmark.folder_id_c?.Id || bookmark.folder_id_c || 1,
-        tags: bookmark.tags_c ? bookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
+folderId: bookmark.folder_id_c?.Id || bookmark.folder_id_c || 1,
+        isFavorite: bookmark.is_favorite_c || false,
         createdAt: bookmark.CreatedOn,
-        updatedAt: bookmark.ModifiedOn
+        modifiedAt: bookmark.ModifiedOn,
+        tags: bookmark.tags_c ? bookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : []
       }));
 
       return bookmarks;
@@ -66,7 +68,8 @@ export const bookmarkService = {
           {"field": {"Name": "url_c"}},
           {"field": {"Name": "favicon_c"}},
           {"field": {"Name": "folder_id_c"}},
-          {"field": {"Name": "tags_c"}},
+{"field": {"Name": "tags_c"}},
+          {"field": {"Name": "is_favorite_c"}},
           {"field": {"Name": "CreatedOn"}},
           {"field": {"Name": "ModifiedOn"}}
         ]
@@ -88,7 +91,8 @@ export const bookmarkService = {
         title: response.data.title_c || 'Untitled Bookmark',
         description: response.data.description_c || '',
         url: response.data.url_c || '',
-        favicon: response.data.favicon_c || '',
+favicon: response.data.favicon_c || '',
+        isFavorite: response.data.is_favorite_c || false,
         folderId: response.data.folder_id_c?.Id || response.data.folder_id_c || 1,
         tags: response.data.tags_c ? response.data.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
         createdAt: response.data.CreatedOn,
@@ -117,7 +121,8 @@ export const bookmarkService = {
           {"field": {"Name": "description_c"}},
           {"field": {"Name": "url_c"}},
           {"field": {"Name": "favicon_c"}},
-          {"field": {"Name": "folder_id_c"}},
+{"field": {"Name": "folder_id_c"}},
+          {"field": {"Name": "is_favorite_c"}},
           {"field": {"Name": "tags_c"}},
           {"field": {"Name": "CreatedOn"}},
           {"field": {"Name": "ModifiedOn"}}
@@ -142,7 +147,8 @@ export const bookmarkService = {
         title: bookmark.title_c || 'Untitled Bookmark',
         description: bookmark.description_c || '',
         url: bookmark.url_c || '',
-        favicon: bookmark.favicon_c || '',
+favicon: bookmark.favicon_c || '',
+        isFavorite: bookmark.is_favorite_c || false,
         folderId: bookmark.folder_id_c?.Id || bookmark.folder_id_c || 1,
         tags: bookmark.tags_c ? bookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
         createdAt: bookmark.CreatedOn,
@@ -171,7 +177,8 @@ export const bookmarkService = {
           description_c: bookmarkData.description || '',
           url_c: bookmarkData.url || '',
           favicon_c: bookmarkData.favicon || '',
-          folder_id_c: parseInt(bookmarkData.folderId) || 1,
+folder_id_c: parseInt(bookmarkData.folderId) || 1,
+          is_favorite_c: bookmarkData.isFavorite || false,
           tags_c: Array.isArray(bookmarkData.tags) ? bookmarkData.tags.join(',') : (bookmarkData.tags || '')
         }]
       });
@@ -205,7 +212,8 @@ export const bookmarkService = {
             description: createdBookmark.description_c || '',
             url: createdBookmark.url_c || '',
             favicon: createdBookmark.favicon_c || '',
-            folderId: createdBookmark.folder_id_c?.Id || createdBookmark.folder_id_c || 1,
+folderId: createdBookmark.folder_id_c?.Id || createdBookmark.folder_id_c || 1,
+            isFavorite: createdBookmark.is_favorite_c || false,
             tags: createdBookmark.tags_c ? createdBookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
             createdAt: createdBookmark.CreatedOn,
             updatedAt: createdBookmark.ModifiedOn
@@ -236,7 +244,8 @@ export const bookmarkService = {
           description_c: updateData.description,
           url_c: updateData.url,
           favicon_c: updateData.favicon,
-          folder_id_c: parseInt(updateData.folderId),
+folder_id_c: parseInt(updateData.folderId),
+          is_favorite_c: updateData.isFavorite,
           tags_c: Array.isArray(updateData.tags) ? updateData.tags.join(',') : (updateData.tags || '')
         }]
       });
@@ -270,7 +279,8 @@ export const bookmarkService = {
             description: updatedBookmark.description_c || '',
             url: updatedBookmark.url_c || '',
             favicon: updatedBookmark.favicon_c || '',
-            folderId: updatedBookmark.folder_id_c?.Id || updatedBookmark.folder_id_c || 1,
+folderId: updatedBookmark.folder_id_c?.Id || updatedBookmark.folder_id_c || 1,
+            isFavorite: updatedBookmark.is_favorite_c || false,
             tags: updatedBookmark.tags_c ? updatedBookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
             createdAt: updatedBookmark.CreatedOn,
             updatedAt: updatedBookmark.ModifiedOn
@@ -348,7 +358,8 @@ export const bookmarkService = {
           {"field": {"Name": "folder_id_c"}},
           {"field": {"Name": "tags_c"}},
           {"field": {"Name": "CreatedOn"}},
-          {"field": {"Name": "ModifiedOn"}}
+{"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "is_favorite_c"}}
         ],
         whereGroups: [{
           "operator": "OR",
@@ -379,7 +390,8 @@ export const bookmarkService = {
         url: bookmark.url_c || '',
         favicon: bookmark.favicon_c || '',
         folderId: bookmark.folder_id_c?.Id || bookmark.folder_id_c || 1,
-        tags: bookmark.tags_c ? bookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
+tags: bookmark.tags_c ? bookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
+        isFavorite: bookmark.is_favorite_c || false,
         createdAt: bookmark.CreatedOn,
         updatedAt: bookmark.ModifiedOn
       }));
@@ -409,7 +421,8 @@ export const bookmarkService = {
           {"field": {"Name": "folder_id_c"}},
           {"field": {"Name": "tags_c"}},
           {"field": {"Name": "CreatedOn"}},
-          {"field": {"Name": "ModifiedOn"}}
+{"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "is_favorite_c"}}
         ],
         where: [{
           "FieldName": "tags_c",
@@ -435,7 +448,8 @@ export const bookmarkService = {
           favicon: bookmark.favicon_c || '',
           folderId: bookmark.folder_id_c?.Id || bookmark.folder_id_c || 1,
           tags: bookmark.tags_c ? bookmark.tags_c.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0) : [],
-          createdAt: bookmark.CreatedOn,
+createdAt: bookmark.CreatedOn,
+          isFavorite: bookmark.is_favorite_c || false,
           updatedAt: bookmark.ModifiedOn
         }))
         .filter(bookmark => 
@@ -447,6 +461,69 @@ export const bookmarkService = {
       console.error("Error fetching bookmarks by tag:", error?.response?.data?.message || error);
       toast.error("Failed to load bookmarks by tag");
       return [];
+    }
+},
+
+  async toggleFavorite(bookmarkId) {
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not available");
+        toast.error("Unable to update favorite status");
+        return null;
+      }
+
+      // First get current bookmark data
+      const currentBookmark = await this.getById(bookmarkId);
+      if (!currentBookmark) {
+        toast.error("Bookmark not found");
+        return null;
+      }
+
+      const newFavoriteStatus = !currentBookmark.isFavorite;
+      
+      // Update the bookmark with new favorite status
+      const params = {
+        records: [
+          {
+            Id: bookmarkId,
+            is_favorite_c: newFavoriteStatus
+          }
+        ]
+      };
+
+      const response = await apperClient.updateRecord('bookmark_c', params);
+
+      if (!response.success) {
+        console.error("Error toggling favorite:", response.message);
+        toast.error(response.message);
+        return null;
+      }
+
+      if (response.results) {
+        const successful = response.results.filter(r => r.success);
+        const failed = response.results.filter(r => !r.success);
+
+        if (failed.length > 0) {
+          console.error(`Failed to update favorite status:`, failed);
+          failed.forEach(record => {
+            if (record.message) toast.error(record.message);
+          });
+          return null;
+        }
+
+        if (successful.length > 0) {
+          toast.success(newFavoriteStatus ? "Added to favorites" : "Removed from favorites");
+          return {
+            ...currentBookmark,
+            isFavorite: newFavoriteStatus
+          };
+        }
+      }
+    } catch (error) {
+      console.error("Error toggling bookmark favorite:", error?.response?.data?.message || error);
+      toast.error("Failed to update favorite status");
+      return null;
     }
   },
 

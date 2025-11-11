@@ -26,12 +26,17 @@ const Sidebar = ({ isOpen, onClose }) => {
     }
   };
 
-  const navigationItems = [
+const navigationItems = [
     {
       to: "/",
       icon: "Bookmark",
       label: "All Bookmarks",
       end: true
+    },
+    {
+      to: "/favorites",
+      icon: "Star",
+      label: "Favorites"
     },
     {
       to: "/tags",

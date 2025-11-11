@@ -9,7 +9,8 @@ import { cn } from "@/utils/cn";
 const BookmarkCard = ({ 
   bookmark, 
   onEdit, 
-  onDelete, 
+onDelete,
+  onToggleFavorite,
   onTagClick,
   className 
 }) => {
@@ -70,7 +71,18 @@ const BookmarkCard = ({
             </div>
             
             {/* Action buttons - hidden until hover */}
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-1 ml-2">
+<div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center space-x-1 ml-2">
+              <button
+                onClick={() => onToggleFavorite && onToggleFavorite(bookmark.Id)}
+                className="p-1 text-slate-400 hover:text-amber-500 transition-colors duration-200 rounded"
+                title={bookmark.isFavorite ? "Remove from favorites" : "Add to favorites"}
+              >
+                <ApperIcon 
+                  name={bookmark.isFavorite ? "Star" : "Star"} 
+                  size={16} 
+                  className={bookmark.isFavorite ? "text-amber-500 fill-amber-500" : "text-slate-400"} 
+                />
+              </button>
               <Button
                 variant="ghost"
                 size="icon"

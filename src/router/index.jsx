@@ -6,6 +6,7 @@ import Layout from "@/components/organisms/Layout";
 
 // Lazy load page components
 const AllBookmarks = lazy(() => import("@/components/pages/AllBookmarks"));
+const Favorites = lazy(() => import("@/components/pages/Favorites"));
 const FolderView = lazy(() => import("@/components/pages/FolderView"));
 const TagView = lazy(() => import("@/components/pages/TagView"));
 const NotFound = lazy(() => import("@/components/pages/NotFound"));
@@ -67,6 +68,10 @@ const mainRoutes = [
   createRoute({
     index: true,
     element: <AllBookmarks />
+  }),
+createRoute({
+    path: "favorites",
+    element: <Favorites />
   }),
   createRoute({
     path: "folder/:folderId",
