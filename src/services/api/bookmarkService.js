@@ -477,10 +477,10 @@ createdAt: bookmark.CreatedOn,
       const currentBookmark = await this.getById(bookmarkId);
       if (!currentBookmark) {
         toast.error("Bookmark not found");
-        return null;
+return null;
       }
 
-      const newFavoriteStatus = !currentBookmark.isFavorite;
+      const newFavoriteStatus = !currentBookmark.is_favorite_c;
       
       // Update the bookmark with new favorite status
       const params = {
