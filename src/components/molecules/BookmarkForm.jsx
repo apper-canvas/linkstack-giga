@@ -16,7 +16,7 @@ const BookmarkForm = ({
     url: "",
     title: "",
     description: "",
-    folderId: 1,
+folderId: "1",
     tags: "",
   });
   
@@ -34,7 +34,7 @@ const BookmarkForm = ({
         url: bookmark.url || "",
         title: bookmark.title || "",
         description: bookmark.description || "",
-        folderId: bookmark.folderId || 1,
+folderId: bookmark.folderId ? bookmark.folderId.toString() : "1",
         tags: bookmark.tags ? bookmark.tags.join(", ") : "",
       });
     }
@@ -194,8 +194,8 @@ const BookmarkForm = ({
               disabled={isLoadingFolders}
             >
               {folders.map((folder) => (
-                <option key={folder.Id} value={folder.Id}>
-                  {folder.name}
+<option key={folder.Id} value={folder.Id}>
+                  {folder.name || folder.Name || 'Unnamed Folder'}
                 </option>
               ))}
             </select>
