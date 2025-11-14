@@ -55,7 +55,7 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
                     <polygon points="12 2 15.09 10.26 24 10.35 17.77 16.01 20.16 24.02 12 18.35 3.84 24.02 6.23 16.01 0 10.35 8.91 10.26 12 2" />
                   </svg>
                 )}
-              </button>
+</button>
               <ApperIcon
                 name="ChevronRight"
                 size={14}
@@ -65,7 +65,6 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
           </NavLink>
         </motion.div>
       ))}
-    </div>
     </div>
   );
 };
