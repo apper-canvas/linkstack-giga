@@ -5,9 +5,8 @@ import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
 
 const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, isSettingDefault }) => {
-  return (
-    <div className="space-y-1">
-{folders.map((folder, index) => (
+<div className="space-y-1">
+      {folders.map((folder, index) => (
         <motion.div
           key={folder.Id}
           initial={{ opacity: 0, x: -20 }}
@@ -65,8 +64,8 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
             </div>
           </NavLink>
         </motion.div>
-        </motion.div>
       ))}
+    </div>
     </div>
   );
 };

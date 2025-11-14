@@ -28,36 +28,65 @@ const Sidebar = ({ isOpen, onClose }) => {
   // State for showing add folder form
   const [showAddFolder, setShowAddFolder] = useState(false);
 
-  useEffect(() => {
-    const loadFolders = async () => {
-      setIsFetching(true);
-      setError(null);
-      try {
-        const response = await folderService.getAll();
-        const folderData = Array.isArray(response) ? response : [];
-        setFolders(folderData);
-        
-        // Set first folder as default if no default folder exists
-        const defaultFolder = folderData.find(folder => folder.is_default_c);
-        if (defaultFolder) {
-          dispatch(setDefaultFolderId(defaultFolder.Id));
-          setDefaultFolderId(defaultFolder.Id);
-        } else if (folderData.length > 0) {
-          dispatch(setDefaultFolderId(folderData[0].Id));
-          setDefaultFolderId(folderData[0].Id);
-        }
-      } catch (err) {
-        console.error('Error loading folders:', err);
-        setError(err.message);
-        toast.error('Failed to load folders');
-      } finally {
-        setIsFetching(false);
+const loadFolders = async () => {
+    setIsFetching(true);
+    setError(null);
+    try {
+      const response = await folderService.getAll();
+      const folderData = Array.isArray(response) ? response : [];
+      setFolders(folderData);
+      
+      // Set first folder as default if no default folder exists
+      const defaultFolder = folderData.find(folder => folder.is_default_c);
+      if (defaultFolder) {
+        dispatch(setDefaultFolderId(defaultFolder.Id));
+        setDefaultFolderId(defaultFolder.Id);
+      } else if (folderData.length > 0) {
+        dispatch(setDefaultFolderId(folderData[0].Id));
+        setDefaultFolderId(folderData[0].Id);
       }
-    };
+    } catch (err) {
+      console.error('Error loading folders:', err);
+      setError(err.message);
+      toast.error('Failed to load folders');
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
+  useEffect(() => {
     loadFolders();
-  }, [dispatch]);
+const loadFolders = async () => {
+    setIsFetching(true);
+    setError(null);
+    try {
+      const response = await folderService.getAll();
+      const folderData = Array.isArray(response) ? response : [];
+      setFolders(folderData);
+      
+      // Set first folder as default if no default folder exists
+      const defaultFolder = folderData.find(folder => folder.is_default_c);
+      if (defaultFolder) {
+        dispatch(setDefaultFolderId(defaultFolder.Id));
+        setDefaultFolderId(defaultFolder.Id);
+      } else if (folderData.length > 0) {
+        dispatch(setDefaultFolderId(folderData[0].Id));
+        setDefaultFolderId(folderData[0].Id);
+      }
+    } catch (err) {
+      console.error('Error loading folders:', err);
+      setError(err.message);
+      toast.error('Failed to load folders');
+    } finally {
+      setIsFetching(false);
+    }
+  };
 
+  useEffect(() => {
+    loadFolders();
+    loadFolders();
+}, [dispatch]);
+}, [dispatch]);
   const handleSetDefault = async (folderId) => {
     setIsSettingDefault(folderId);
     try {
