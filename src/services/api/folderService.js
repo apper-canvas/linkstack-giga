@@ -301,9 +301,8 @@ Id: updatedFolder.Id,
     }
   },
 
-  setDefaultFolder: async (folderId) => {
+setDefaultFolder: async (folderId) => {
     try {
-try {
       // First, fetch all folders to find current default
       const apperClient = getApperClient();
       if (!apperClient) {
@@ -319,11 +318,9 @@ try {
         ]
       });
 
-      if (!allFoldersResponse.success) {
 if (!allFoldersResponse.success) {
         throw new Error(allFoldersResponse.message || 'Failed to fetch folders');
       }
-
       // Find current default folder
       const currentDefault = (allFoldersResponse.data || []).find(f => f.is_default_c);
 
@@ -366,11 +363,10 @@ if (!allFoldersResponse.success) {
 
       toast.success("Default folder updated successfully");
       return true;
-    } catch (error) {
+} catch (error) {
       console.error('Error setting default folder:', error?.response?.data?.message || error);
       toast.error("Failed to set default folder");
       return false;
     }
   }
-};
 };
