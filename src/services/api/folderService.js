@@ -10,12 +10,13 @@ export const getFolders = async () => {
   try {
     const apperClient = getApperClient();
     
-    const response = await apperClient.fetchRecords('folder_c', {
+const response = await apperClient.fetchRecords('folder_c', {
       fields: [
         { field: { Name: 'Id' } },
         { field: { Name: 'name_c' } },
         { field: { Name: 'is_default_c' } },
         { field: { Name: 'bookmark_count_c' } },
+        { field: { Name: 'color_c' } },
         { field: { Name: 'color_c' } }
       ],
       orderBy: [{ fieldName: 'Id', sorttype: 'ASC' }]

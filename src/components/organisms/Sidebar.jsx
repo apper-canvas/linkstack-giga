@@ -15,46 +15,48 @@ const Sidebar = ({ isOpen, onClose }) => {
   // Redux integration
   const dispatch = useDispatch();
 
-  // State for managing folder operations
+// State for managing folder operations
   const [newFolderName, setNewFolderName] = useState('');
   const [isCreatingFolder, setIsCreatingFolder] = useState(false);
   const [isDeleting, setIsDeleting] = useState(null);
   const [isFetching, setIsFetching] = useState(true);
   const [error, setError] = useState(null);
+  const [folders, setFolders] = useState([]);
+  const [defaultFolderId, setDefaultFolderId] = useState(null);
+  const [isSettingDefault, setIsSettingDefault] = useState(null);
 
   // State for showing add folder form
   const [showAddFolder, setShowAddFolder] = useState(false);
 
-  // State for folders list
-  const [folders, setFolders] = useState([]);
-  const [isSettingDefault, setIsSettingDefault] = useState(null);
-  const [defaultFolderId, setDefaultFolderId] = useState(null);
-
-  // Fetch folders on component mount
   useEffect(() => {
-    loadFolders();
-  }, []);
+    const loadFolders = async () => {
+      setIsFetching(true);
+      setError(null);
+      try {
+        const response = await folderService.getAll();
+        const folderData = Array.isArray(response) ? response : [];
+        setFolders(folderData);
+        
+        // Set first folder as default if no default folder exists
+        const defaultFolder = folderData.find(folder => folder.is_default_c);
+        if (defaultFolder) {
+          dispatch(setDefaultFolderId(defaultFolder.Id));
+          setDefaultFolderId(defaultFolder.Id);
+        } else if (folderData.length > 0) {
+          dispatch(setDefaultFolderId(folderData[0].Id));
+          setDefaultFolderId(folderData[0].Id);
+        }
+      } catch (err) {
+        console.error('Error loading folders:', err);
+        setError(err.message);
+        toast.error('Failed to load folders');
+      } finally {
+        setIsFetching(false);
+      }
+    };
 
-  // Load folders from service
-// Load folders from service
-  const loadFolders = async () => {
-    setIsFetching(true);
-    setError(null);
-    try {
-      const response = await folderService.getFolders();
-      // Ensure response is an array, fallback to empty array if not
-      const folderData = Array.isArray(response) ? response : [];
-      setFolders(folderData);
-    } catch (err) {
-      console.error('Failed to load folders:', err);
-      setError(err.message || 'Failed to load folders');
-      toast.error('Failed to load folders');
-      // Ensure folders is set to empty array on error
-      setFolders([]);
-    } finally {
-      setIsFetching(false);
-    }
-  };
+    loadFolders();
+  }, [dispatch]);
 
   const handleSetDefault = async (folderId) => {
     setIsSettingDefault(folderId);

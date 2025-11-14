@@ -7,47 +7,43 @@ import ApperIcon from "@/components/ApperIcon";
 const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, isSettingDefault }) => {
   return (
     <div className="space-y-1">
-      {folders.map((folder, index) => (
+{folders.map((folder, index) => (
         <motion.div
           key={folder.Id}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.2, delay: index * 0.05 }}
         >
-<NavLink
+          <NavLink
             to={`/folder/${folder.Id}`}
             className={({ isActive }) =>
               cn(
                 "flex items-center justify-between px-3 py-2 text-sm rounded-lg transition-all duration-200 group",
                 isActive
                   ? "bg-primary-50 text-primary-700 border-l-4 border-primary-600"
-                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                  : "text-slate-600 hover:bg-slate-100"
               )
             }
           >
-<div className="flex items-center space-x-2">
-              <span>{folder.name_c}</span>
+            <div className="flex items-center space-x-2">
+              <span className="font-medium">{folder.name_c || 'Untitled Folder'}</span>
               {folder.is_default_c && (
                 <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
                   Default
                 </span>
               )}
             </div>
-            <div className="flex items-center space-x-2">
-<button
+            <div className="flex items-center justify-end space-x-2">
+              <span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
+                {folder.bookmark_count_c || 0}
+              </span>
+              <button
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  onSetDefault?.(folder.Id);
+                  onSetDefault(folder.Id);
                 }}
-                disabled={isSettingDefault === folder.Id}
-                className={cn(
-                  "p-1 rounded transition-all duration-200",
-                  folder.is_default_c
-                    ? "text-amber-500 hover:bg-amber-50"
-                    : "text-slate-400 hover:bg-slate-100 hover:text-slate-600",
-                  isSettingDefault === folder.Id && "opacity-50 cursor-not-allowed"
-                )}
+                className="p-1 hover:bg-slate-200 rounded transition-colors"
                 title={folder.is_default_c ? "This is the default folder" : "Set as default"}
               >
                 {isSettingDefault === folder.Id ? (
@@ -56,14 +52,11 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
                 ) : (
-<svg className={cn("w-4 h-4", folder.is_default_c ? "fill-current" : "")} viewBox="0 0 24 24" fill={folder.is_default_c ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
+                  <svg className={cn("w-4 h-4", folder.is_default_c ? "fill-current" : "")} viewBox="0 0 24 24" fill={folder.is_default_c ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
                     <polygon points="12 2 15.09 10.26 24 10.35 17.77 16.01 20.16 24.02 12 18.35 3.84 24.02 6.23 16.01 0 10.35 8.91 10.26 12 2" />
                   </svg>
                 )}
               </button>
-<span className="text-xs text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
-                {folder.bookmark_count_c || 0}
-              </span>
               <ApperIcon
                 name="ChevronRight"
                 size={14}
@@ -71,6 +64,7 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
               />
             </div>
           </NavLink>
+        </motion.div>
         </motion.div>
       ))}
     </div>
