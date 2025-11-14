@@ -26,8 +26,7 @@ export const getFolders = async () => {
       toast.error(response.message || 'Failed to load folders');
       return [];
     }
-
-    return response.data || [];
+return response || [];
   } catch (error) {
     console.error('Error fetching folders:', error?.response?.data?.message || error);
     toast.error('Failed to load folders');

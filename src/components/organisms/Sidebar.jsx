@@ -39,9 +39,9 @@ const Sidebar = ({ isOpen, onClose }) => {
   const loadFolders = async () => {
     setIsFetching(true);
     setError(null);
-    try {
+try {
       const response = await folderService.getFolders();
-      const folderData = response?.data || [];
+      const folderData = response || [];
       setFolders(folderData);
     } catch (err) {
       console.error('Failed to load folders:', err);
