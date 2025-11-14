@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 import { setDefaultFolderId } from "@/store/userSlice";
 import { cn } from "@/utils/cn";
-import { folderService, getFolders, setDefaultFolder } from "@/services/api/folderService";
+import { getFolders, setDefaultFolder } from "@/services/api/folderService";
 import ApperIcon from "@/components/ApperIcon";
 import FolderList from "@/components/molecules/FolderList";
 import Button from "@/components/atoms/Button";
@@ -32,7 +32,7 @@ const loadFolders = async () => {
     setIsFetching(true);
     setError(null);
     try {
-      const response = await folderService.getAll();
+const response = await getFolders();
       const folderData = Array.isArray(response) ? response : [];
       setFolders(folderData);
       
@@ -61,7 +61,7 @@ const loadFolders = async () => {
   const handleSetDefault = async (folderId) => {
     setIsSettingDefault(folderId);
     try {
-      await folderService.setDefaultFolder(folderId);
+await setDefaultFolder(folderId);
       const updatedFolders = folders.map(f => ({
         ...f,
         isDefault: f.Id === folderId
