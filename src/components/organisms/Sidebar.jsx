@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import folderService from "@/services/api/folderService";
+import { folderService } from "@/services/api/folderService";
 import { toast } from "react-toastify";
 import { setDefaultFolderId } from "@/store/userSlice";
 import { cn } from "@/utils/cn";
