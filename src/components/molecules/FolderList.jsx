@@ -14,7 +14,7 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.2, delay: index * 0.05 }}
         >
-          <NavLink
+<NavLink
             to={`/folder/${folder.Id}`}
             className={({ isActive }) =>
               cn(
@@ -25,10 +25,11 @@ const FolderList = ({ folders, currentFolderId, onSetDefault, defaultFolderId, i
               )
             }
           >
-            <div className="flex items-center space-x-2">
-              <span className="font-medium">{folder.name_c || 'Untitled Folder'}</span>
+            <div className="flex items-center space-x-2 flex-1 min-w-0">
+              <ApperIcon name="Folder" size={16} className="text-slate-400 flex-shrink-0" />
+              <span className="font-medium text-slate-900 truncate">{folder.name_c || 'Untitled Folder'}</span>
               {folder.is_default_c && (
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-800 flex-shrink-0">
                   Default
                 </span>
               )}
