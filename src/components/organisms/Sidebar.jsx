@@ -1,37 +1,78 @@
-import React, { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import folderService from "@/services/api/folderService";
 import { toast } from "react-toastify";
-import Button from "@/components/atoms/Button";
-import FolderList from "@/components/molecules/FolderList";
-import ApperIcon from "@/components/ApperIcon";
-import { folderService } from "@/services/api/folderService";
 import { setDefaultFolderId } from "@/store/userSlice";
 import { cn } from "@/utils/cn";
-const Sidebar = ({ isOpen, onClose }) => {
-  const [folders, setFolders] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSettingDefault, setIsSettingDefault] = useState(null);
-  const dispatch = useDispatch();
-  const defaultFolderId = useSelector((state) => state.user.defaultFolderId);
+import ApperIcon from "@/components/ApperIcon";
+import FolderList from "@/components/molecules/FolderList";
+import Button from "@/components/atoms/Button";
+import Input from "@/components/atoms/Input";
 
+const Sidebar = ({ isOpen, onClose }) => {
+  // Redux integration
+  const dispatch = useDispatch();
+
+  // State for managing folder operations
+  const [newFolderName, setNewFolderName] = useState('');
+  const [isCreatingFolder, setIsCreatingFolder] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(null);
+  const [isFetching, setIsFetching] = useState(true);
+  const [error, setError] = useState(null);
+
+  // State for showing add folder form
+  const [showAddFolder, setShowAddFolder] = useState(false);
+
+  // State for folders list
+  const [folders, setFolders] = useState([]);
+  const [isSettingDefault, setIsSettingDefault] = useState(null);
+  const [defaultFolderId, setDefaultFolderId] = useState(null);
+
+  // Fetch folders on component mount
   useEffect(() => {
     loadFolders();
   }, []);
 
+  // Load folders from service
   const loadFolders = async () => {
+    setIsFetching(true);
+    setError(null);
     try {
-      const foldersData = await folderService.getAll();
-      setFolders(foldersData);
-    } catch (error) {
-      console.error("Error loading folders:", error);
+      const response = await folderService.getFolders();
+      const folderData = response?.data || [];
+      setFolders(folderData);
+    } catch (err) {
+      console.error('Failed to load folders:', err);
+      setError(err.message || 'Failed to load folders');
+      toast.error('Failed to load folders');
     } finally {
-      setIsLoading(false);
+      setIsFetching(false);
     }
   };
 
-const navigationItems = [
+  const handleSetDefault = async (folderId) => {
+    setIsSettingDefault(folderId);
+    try {
+      await folderService.setDefaultFolder(folderId);
+      const updatedFolders = folders.map(f => ({
+        ...f,
+        isDefault: f.Id === folderId
+      }));
+      setFolders(updatedFolders);
+      setDefaultFolderId(folderId);
+      dispatch(setDefaultFolderId(folderId));
+      toast.success("Default folder updated successfully");
+    } catch (error) {
+      console.error("Failed to set default folder:", error);
+      toast.error("Failed to set default folder");
+    } finally {
+      setIsSettingDefault(null);
+    }
+  };
+
+  const navigationItems = [
     {
       to: "/",
       icon: "Bookmark",
@@ -50,7 +91,7 @@ const navigationItems = [
     }
   ];
 
-  return (
+return (
     <>
       {/* Mobile overlay */}
       <div
@@ -64,9 +105,9 @@ const navigationItems = [
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-white border-r border-slate-200">
         <SidebarContent 
-folders={folders} 
+          folders={folders}
           navigationItems={navigationItems}
-          isLoading={isLoading}
+          isLoading={isFetching}
           onRefreshFolders={loadFolders}
           currentFolderId={null}
           onSetDefault={handleSetDefault}
@@ -75,7 +116,7 @@ folders={folders}
         />
       </div>
 
-      {/* Mobile Sidebar */}
+{/* Mobile Sidebar */}
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-out lg:hidden",
@@ -83,9 +124,9 @@ folders={folders}
         )}
       >
         <SidebarContent 
-folders={folders} 
+          folders={folders}
           navigationItems={navigationItems}
-          isLoading={isLoading}
+          isLoading={isFetching}
           onRefreshFolders={loadFolders}
           currentFolderId={null}
           onSetDefault={handleSetDefault}
@@ -98,26 +139,10 @@ folders={folders}
     </>
   );
 };
-
-const handleSetDefault = async (folderId) => {
-  setIsSettingDefault(folderId);
-  try {
-    await folderService.setDefaultFolder(folderId);
-    // Update local state to reflect default folder
-    const updatedFolders = folders.map(f => ({
-      ...f,
-      isDefault: f.Id === folderId
-    }));
-    setFolders(updatedFolders);
-    dispatch(setDefaultFolderId(folderId));
-    toast.success("Default folder updated successfully");
-  } catch (error) {
-    console.error("Failed to set default folder:", error);
-    toast.error("Failed to set default folder");
-  } finally {
-    setIsSettingDefault(null);
-  }
+    </>
+  );
 };
+
 
 const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders, currentFolderId, onSetDefault, defaultFolderId, isSettingDefault, onClose, isMobile = false }) => {
   return (

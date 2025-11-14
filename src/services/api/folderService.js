@@ -1,5 +1,6 @@
-import { getApperClient } from "@/services/apperClient";
 import { toast } from "react-toastify";
+import React from "react";
+import { getApperClient } from "@/services/apperClient";
 
 export const folderService = {
   async getAll() {
@@ -292,24 +293,34 @@ Id: updatedFolder.Id,
       }
 
       // Return the updated folder
+// Return the updated folder
       return await this.getById(folderId);
     } catch (error) {
       console.error("Error updating bookmark count:", error?.response?.data?.message || error);
       return null;
-}
+    }
   },
 
   setDefaultFolder: async (folderId) => {
     try {
+try {
       // First, fetch all folders to find current default
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not available");
+        return null;
+      }
+
       const allFoldersResponse = await apperClient.fetchRecords('folder_c', {
         fields: [
-          {"field": {"Name": "Id"}},
-          {"field": {"Name": "is_default_c"}}
+          { field: { Name: 'Id' } },
+          { field: { Name: 'name_c' } },
+          { field: { Name: 'is_default_c' } }
         ]
       });
 
       if (!allFoldersResponse.success) {
+if (!allFoldersResponse.success) {
         throw new Error(allFoldersResponse.message || 'Failed to fetch folders');
       }
 
@@ -333,7 +344,7 @@ Id: updatedFolder.Id,
         is_default_c: true
       });
 
-      // Update folders
+      // Update all records
       const updateResponse = await apperClient.updateRecord('folder_c', {
         records: updateRecords
       });
@@ -342,21 +353,24 @@ Id: updatedFolder.Id,
         throw new Error(updateResponse.message || 'Failed to update default folder');
       }
 
-      // Handle partial failures
       if (updateResponse.results) {
         const failed = updateResponse.results.filter(r => !r.success);
         if (failed.length > 0) {
-          console.error(`Failed to update ${failed.length} records:`, failed);
+          console.error(`Failed to update ${failed.length} folders:`, failed);
           failed.forEach(record => {
             if (record.message) console.error(record.message);
           });
+          return false;
         }
       }
 
+      toast.success("Default folder updated successfully");
       return true;
     } catch (error) {
       console.error('Error setting default folder:', error?.response?.data?.message || error);
-      throw error;
+      toast.error("Failed to set default folder");
+      return false;
     }
   }
+};
 };
