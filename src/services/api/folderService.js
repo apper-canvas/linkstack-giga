@@ -14,11 +14,11 @@ export const getFolders = async () => {
       fields: [
         { field: { Name: 'Id' } },
         { field: { Name: 'name_c' } },
-        { field: { Name: 'description_c' } },
         { field: { Name: 'is_default_c' } },
-        { field: { Name: 'created_at_c' } }
+        { field: { Name: 'bookmark_count_c' } },
+        { field: { Name: 'color_c' } }
       ],
-      orderBy: [{ fieldName: 'created_at_c', sorttype: 'DESC' }]
+      orderBy: [{ fieldName: 'Id', sorttype: 'ASC' }]
     });
 
     if (!response.success) {

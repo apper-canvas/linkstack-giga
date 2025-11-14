@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { folderService } from "@/services/api/folderService";
 import { toast } from "react-toastify";
 import { setDefaultFolderId } from "@/store/userSlice";
 import { cn } from "@/utils/cn";
+import { folderService, getFolders, setDefaultFolder } from "@/services/api/folderService";
 import ApperIcon from "@/components/ApperIcon";
 import FolderList from "@/components/molecules/FolderList";
 import Button from "@/components/atoms/Button";
@@ -116,7 +116,7 @@ return (
         />
       </div>
 
-{/* Mobile Sidebar */}
+      {/* Mobile Sidebar */}
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 transform transition-transform duration-300 ease-out lg:hidden",
@@ -136,7 +136,7 @@ return (
           isMobile={true}
         />
       </div>
-</>
+    </>
   );
 };
 
@@ -229,16 +229,16 @@ const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders,
           )}
         </div>
       </nav>
-
-      {/* Footer */}
+{/* Footer */}
       <div className="p-4 border-t border-slate-200">
         <div className="text-xs text-slate-500 text-center">
-          <p>Total: {folders.reduce((acc, folder) => acc + folder.bookmarkCount, 0)} bookmarks</p>
+          <p>Total: {folders.reduce((acc, folder) => acc + (folder.bookmark_count_c || 0), 0)} bookmarks</p>
           <p className="mt-1">Across {folders.length} folders</p>
         </div>
       </div>
     </div>
   );
+};
 };
 
 export default Sidebar;
