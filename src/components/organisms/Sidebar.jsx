@@ -36,17 +36,21 @@ const Sidebar = ({ isOpen, onClose }) => {
   }, []);
 
   // Load folders from service
+// Load folders from service
   const loadFolders = async () => {
     setIsFetching(true);
     setError(null);
-try {
+    try {
       const response = await folderService.getFolders();
-      const folderData = response || [];
+      // Ensure response is an array, fallback to empty array if not
+      const folderData = Array.isArray(response) ? response : [];
       setFolders(folderData);
     } catch (err) {
       console.error('Failed to load folders:', err);
       setError(err.message || 'Failed to load folders');
       toast.error('Failed to load folders');
+      // Ensure folders is set to empty array on error
+      setFolders([]);
     } finally {
       setIsFetching(false);
     }
@@ -232,8 +236,8 @@ const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders,
 {/* Footer */}
       <div className="p-4 border-t border-slate-200">
         <div className="text-xs text-slate-500 text-center">
-          <p>Total: {folders.reduce((acc, folder) => acc + (folder.bookmark_count_c || 0), 0)} bookmarks</p>
-          <p className="mt-1">Across {folders.length} folders</p>
+          <p>Total: {Array.isArray(folders) ? folders.reduce((acc, folder) => acc + (folder.bookmark_count_c || 0), 0) : 0} bookmarks</p>
+          <p className="mt-1">Across {Array.isArray(folders) ? folders.length : 0} folders</p>
         </div>
       </div>
 </div>
