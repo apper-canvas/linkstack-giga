@@ -236,9 +236,8 @@ const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders,
           <p className="mt-1">Across {folders.length} folders</p>
         </div>
       </div>
-    </div>
+</div>
   );
-};
 };
 
 export default Sidebar;
