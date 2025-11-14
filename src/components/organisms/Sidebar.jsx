@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import Button from "@/components/atoms/Button";
 import FolderList from "@/components/molecules/FolderList";
 import ApperIcon from "@/components/ApperIcon";
 import { folderService } from "@/services/api/folderService";
+import { setDefaultFolderId } from "@/store/userSlice";
 import { cn } from "@/utils/cn";
-
 const Sidebar = ({ isOpen, onClose }) => {
   const [folders, setFolders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSettingDefault, setIsSettingDefault] = useState(null);
+  const dispatch = useDispatch();
+  const defaultFolderId = useSelector((state) => state.user.defaultFolderId);
 
   useEffect(() => {
     loadFolders();
@@ -59,10 +64,14 @@ const navigationItems = [
       {/* Desktop Sidebar */}
       <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 bg-white border-r border-slate-200">
         <SidebarContent 
-          folders={folders} 
+folders={folders} 
           navigationItems={navigationItems}
           isLoading={isLoading}
           onRefreshFolders={loadFolders}
+          currentFolderId={null}
+          onSetDefault={handleSetDefault}
+          defaultFolderId={defaultFolderId}
+          isSettingDefault={isSettingDefault}
         />
       </div>
 
@@ -74,10 +83,14 @@ const navigationItems = [
         )}
       >
         <SidebarContent 
-          folders={folders} 
+folders={folders} 
           navigationItems={navigationItems}
           isLoading={isLoading}
           onRefreshFolders={loadFolders}
+          currentFolderId={null}
+          onSetDefault={handleSetDefault}
+          defaultFolderId={defaultFolderId}
+          isSettingDefault={isSettingDefault}
           onClose={onClose}
           isMobile={true}
         />
@@ -86,7 +99,27 @@ const navigationItems = [
   );
 };
 
-const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders, onClose, isMobile = false }) => {
+const handleSetDefault = async (folderId) => {
+  setIsSettingDefault(folderId);
+  try {
+    await folderService.setDefaultFolder(folderId);
+    // Update local state to reflect default folder
+    const updatedFolders = folders.map(f => ({
+      ...f,
+      isDefault: f.Id === folderId
+    }));
+    setFolders(updatedFolders);
+    dispatch(setDefaultFolderId(folderId));
+    toast.success("Default folder updated successfully");
+  } catch (error) {
+    console.error("Failed to set default folder:", error);
+    toast.error("Failed to set default folder");
+  } finally {
+    setIsSettingDefault(null);
+  }
+};
+
+const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders, currentFolderId, onSetDefault, defaultFolderId, isSettingDefault, onClose, isMobile = false }) => {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -163,7 +196,13 @@ const SidebarContent = ({ folders, navigationItems, isLoading, onRefreshFolders,
             </div>
           ) : (
             <div onClick={onClose}>
-              <FolderList folders={folders} />
+<FolderList 
+                folders={folders}
+                currentFolderId={currentFolderId}
+                onSetDefault={onSetDefault}
+                defaultFolderId={defaultFolderId}
+                isSettingDefault={isSettingDefault}
+              />
             </div>
           )}
         </div>

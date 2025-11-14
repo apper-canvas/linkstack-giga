@@ -10,11 +10,12 @@ export const folderService = {
         return [];
       }
 
-      const response = await apperClient.fetchRecords('folder_c', {
+const response = await apperClient.fetchRecords('folder_c', {
         fields: [
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "color_c"}},
           {"field": {"Name": "bookmark_count_c"}},
+          {"field": {"Name": "is_default_c"}},
           {"field": {"Name": "CreatedOn"}}
         ],
         orderBy: [{"fieldName": "CreatedOn", "sorttype": "DESC"}]
@@ -27,11 +28,12 @@ export const folderService = {
       }
 
       // Transform database response to match UI expectations
-      const folders = (response.data || []).map(folder => ({
+const folders = (response.data || []).map(folder => ({
         Id: folder.Id,
         name: folder.name_c || 'Untitled Folder',
         color: folder.color_c || '#3b82f6',
         bookmarkCount: folder.bookmark_count_c || 0,
+        isDefault: folder.is_default_c || false,
         createdAt: folder.CreatedOn
       }));
 
@@ -52,10 +54,11 @@ export const folderService = {
       }
 
       const response = await apperClient.getRecordById('folder_c', parseInt(id), {
-        fields: [
+fields: [
           {"field": {"Name": "name_c"}},
           {"field": {"Name": "color_c"}},
           {"field": {"Name": "bookmark_count_c"}},
+          {"field": {"Name": "is_default_c"}},
           {"field": {"Name": "CreatedOn"}}
         ]
       });
@@ -71,11 +74,12 @@ export const folderService = {
       }
 
       // Transform database response to match UI expectations
-      const folder = {
+const folder = {
         Id: response.data.Id,
         name: response.data.name_c || 'Untitled Folder',
         color: response.data.color_c || '#3b82f6',
         bookmarkCount: response.data.bookmark_count_c || 0,
+        isDefault: response.data.is_default_c || false,
         createdAt: response.data.CreatedOn
       };
 
@@ -95,11 +99,12 @@ export const folderService = {
         return null;
       }
 
-      const response = await apperClient.createRecord('folder_c', {
+const response = await apperClient.createRecord('folder_c', {
         records: [{
           name_c: folderData.name || 'Untitled Folder',
           color_c: folderData.color || '#3b82f6',
-          bookmark_count_c: 0
+          bookmark_count_c: 0,
+          is_default_c: folderData.isDefault || false
         }]
       });
 
@@ -126,11 +131,12 @@ export const folderService = {
           toast.success("Folder created successfully");
           
           // Transform response to match UI expectations
-          return {
+return {
             Id: createdFolder.Id,
             name: createdFolder.name_c || 'Untitled Folder',
             color: createdFolder.color_c || '#3b82f6',
             bookmarkCount: createdFolder.bookmark_count_c || 0,
+            isDefault: createdFolder.is_default_c || false,
             createdAt: createdFolder.CreatedOn
           };
         }
@@ -154,10 +160,11 @@ export const folderService = {
 
       const response = await apperClient.updateRecord('folder_c', {
         records: [{
-          Id: parseInt(id),
+Id: parseInt(id),
           name_c: updateData.name,
           color_c: updateData.color,
-          bookmark_count_c: updateData.bookmarkCount
+          bookmark_count_c: updateData.bookmarkCount,
+          is_default_c: updateData.isDefault
         }]
       });
 
@@ -185,10 +192,11 @@ export const folderService = {
           
           // Transform response to match UI expectations
           return {
-            Id: updatedFolder.Id,
+Id: updatedFolder.Id,
             name: updatedFolder.name_c || 'Untitled Folder',
             color: updatedFolder.color_c || '#3b82f6',
             bookmarkCount: updatedFolder.bookmark_count_c || 0,
+            isDefault: updatedFolder.is_default_c || false,
             createdAt: updatedFolder.CreatedOn
           };
         }
@@ -288,6 +296,67 @@ export const folderService = {
     } catch (error) {
       console.error("Error updating bookmark count:", error?.response?.data?.message || error);
       return null;
+}
+  },
+
+  setDefaultFolder: async (folderId) => {
+    try {
+      // First, fetch all folders to find current default
+      const allFoldersResponse = await apperClient.fetchRecords('folder_c', {
+        fields: [
+          {"field": {"Name": "Id"}},
+          {"field": {"Name": "is_default_c"}}
+        ]
+      });
+
+      if (!allFoldersResponse.success) {
+        throw new Error(allFoldersResponse.message || 'Failed to fetch folders');
+      }
+
+      // Find current default folder
+      const currentDefault = (allFoldersResponse.data || []).find(f => f.is_default_c);
+
+      // Prepare update records
+      const updateRecords = [];
+
+      // Unset current default if exists
+      if (currentDefault && currentDefault.Id !== parseInt(folderId)) {
+        updateRecords.push({
+          Id: currentDefault.Id,
+          is_default_c: false
+        });
+      }
+
+      // Set new default
+      updateRecords.push({
+        Id: parseInt(folderId),
+        is_default_c: true
+      });
+
+      // Update folders
+      const updateResponse = await apperClient.updateRecord('folder_c', {
+        records: updateRecords
+      });
+
+      if (!updateResponse.success) {
+        throw new Error(updateResponse.message || 'Failed to update default folder');
+      }
+
+      // Handle partial failures
+      if (updateResponse.results) {
+        const failed = updateResponse.results.filter(r => !r.success);
+        if (failed.length > 0) {
+          console.error(`Failed to update ${failed.length} records:`, failed);
+          failed.forEach(record => {
+            if (record.message) console.error(record.message);
+          });
+        }
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error setting default folder:', error?.response?.data?.message || error);
+      throw error;
     }
   }
 };
